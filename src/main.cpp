@@ -1,8 +1,8 @@
 #include "field/field.hpp"
-#include "stdio.h"
+#include <iostream>
 
 int main()
 {
-
+    std::cout << "Hello Chess Player";
     return 0;
 }
