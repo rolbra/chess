@@ -1,7 +1,8 @@
 class Field
 {
     private:
-        int init();
+        std::string output;
     public:
+        Field();
         int display();
 };
