@@ -3,7 +3,7 @@
 
 int main()
 {
-    std::cout << "Hello Chess Player";
+    std::cout << "Hello Chess Player \n\n";
 
     Field chessBoard;
 
