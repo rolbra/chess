@@ -1,4 +1,13 @@
 cmake_minimum_required(VERSION 3.15.6)
 project(chess)
 
-add_executable(chess src/main.cpp)
+set(SOURCES
+    src/main.cpp
+    src/board/field.cpp
+    src/board/field.hpp
+)
+
+include_directories(src)
+
+message( SOURCES: ${SOURCES})
+add_executable(chess ${SOURCES})
