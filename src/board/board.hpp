@@ -1,8 +1,8 @@
-class Field
+class Board
 {
     private:
         std::string output;
     public:
-        Field();
+        Board();
         int display();
 };

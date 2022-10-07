@@ -1,11 +1,11 @@
 #include <iostream>
-#include "field.hpp"
+#include "board.hpp"
 
 int main()
 {
-    std::cout << "Hello Chess Player \n\n";
+    std::cout << "\nHello Chess Player \n\n";
 
-    Field chessBoard;
+    Board chessBoard;
 
     chessBoard.display();
 

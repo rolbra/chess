@@ -1,8 +1,8 @@
 #include <string>
 #include <iostream>
-#include "field.hpp"
+#include "board.hpp"
 
-Field::Field()
+Board::Board()
 {
     std::cout << "init Chess Board" << std::endl;
     output = "\
@@ -45,8 +45,8 @@ Field::Field()
         A       B       C       D       E       F       G       H";
 }
 
-int Field::display()
+int Board::display()
 {
-    std::cout << output << std::endl;
+    std::cout << output << std::endl << std::endl;
     return 0;
 }
