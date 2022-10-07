@@ -1,5 +1,5 @@
 #include <iostream>
-#include "board/field.hpp"
+#include "field.hpp"
 
 int main()
 {

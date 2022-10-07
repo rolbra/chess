@@ -1,13 +1,21 @@
 cmake_minimum_required(VERSION 3.15.6)
 project(chess)
 
-set(SOURCES
-    src/main.cpp
-    src/board/field.cpp
-    src/board/field.hpp
+FILE(GLOB HEADERS_LOCAL src/*.hpp)
+FILE(GLOB SRC_LOCAL src/*.cpp)
+
+FILE(GLOB_RECURSE HEADERS_EXTERNAL src/board/*.h)
+FILE(GLOB_RECURSE SRC_EXTERNAL src/board/*.cpp)
+
+SET(HEADERS ${HEADERS_LOCAL} ${HEADERS_EXTERNAL})
+SET(SRC ${SRC_LOCAL} ${SRC_EXTERNAL})
+
+SET(SRCFILES 
+	${SRC} 
+	${HEADERS}
 )
+message( SRCFILES: ${SRCFILES})
 
-include_directories(src)
+include_directories(src src/board)
 
-message( SOURCES: ${SOURCES})
-add_executable(chess ${SOURCES})
+add_executable(chess ${SRCFILES})
