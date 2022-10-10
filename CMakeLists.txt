@@ -18,4 +18,4 @@ message( SRCFILES: ${SRCFILES})
 
 include_directories(src src/board)
 
-add_executable(chess ${SRCFILES})
+add_executable(chess WIN32 ${SRCFILES})
