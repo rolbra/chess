@@ -5,7 +5,7 @@
 #include <Windows.h>
 #include "board.hpp"
 
-#define CONSOLEBOARD
+#define GUIBOARD
 
 #ifdef CONSOLEBOARD
 
@@ -37,6 +37,11 @@ int APIENTRY WinMain(HINSTANCE hInstance,
     HWND cmd = GetConsoleWindow();
     HDC hDC = GetDC(cmd);
 
+
+    for( int x=10; x<4000; x++)
+    {
+        SetPixel(hDC, x, 300, RGB(0xFF,0x00,0x00));
+    }
 
     for( int r=100; r<200; r++)
     {
@@ -133,7 +138,7 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,i
         exit(0);
     }
 // CreateWindow //
-    HWND hwnd=CreateWindow(szAppName,"SetPixel example - programming-technique.blogspot.com",
+    HWND hwnd=CreateWindow(szAppName,"chess",
                            WS_OVERLAPPEDWINDOW,
                            CW_USEDEFAULT,
                            CW_USEDEFAULT,

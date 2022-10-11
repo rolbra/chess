@@ -1,6 +1,9 @@
 #include <string>
 #include <iostream>
+#include <Windows.h>
 #include "board.hpp"
+
+
 
 Board::Board()
 {
@@ -48,5 +51,47 @@ Board::Board()
 int Board::display()
 {
     std::cout << output << std::endl << std::endl;
+    return 0;
+}
+
+int Board::createStreightLine( COORD a, COORD b )
+{
+    int rc = 1;
+
+    HWND cmd = GetConsoleWindow();
+    HDC hDC = GetDC(cmd);
+
+    if( a.Y == b.Y )
+    {   //horizontal
+        for( int x=a.X; x<b.X; x++)
+            SetPixel(hDC, x, a.Y, RGB(0xFF,0x00,0x00));
+        rc = 0;
+    }
+    else if( a.X == b.X )
+    {
+        //vertical
+        for( int y=a.Y; y<b.Y; y++)
+            SetPixel(hDC, a.X, y, RGB(0xFF,0x00,0x00));
+        rc = 0;
+    }
+    else
+    {
+        //no streight line
+        rc = -1;
+    }
+    
+    ReleaseDC(cmd, hDC);
+	DeleteDC(hDC);
+    
+    return rc;
+}
+
+int Board::createRect( COORD a, COORD b )
+{
+    return 0;
+}
+
+int Board::createRects()
+{
     return 0;
 }
