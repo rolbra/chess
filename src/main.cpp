@@ -4,6 +4,7 @@
 #include <fcntl.h>
 #include <Windows.h>
 #include "board.hpp"
+#include <gdiplus.h>
 
 #define GUIBOARD
 
@@ -99,13 +100,33 @@ void drawStreightLine(COORD a, COORD b)
         setPixel(x, a.Y, greenColor);
     }
 }
+
+void gdiPlusRect( HDC hdc )
+{
+    Gdiplus::Graphics graficObject( hdc );
+    Gdiplus::Pen pen( Gdiplus::Color( 255, 255 , 0, 0 ), Gdiplus::REAL( 1.0F ) );
+    Gdiplus::SolidBrush brush( Gdiplus::Color( 255, 0, 255, 0) );
+
+    graficObject.DrawLine( &pen, Gdiplus::Point( 10, 10 ), Gdiplus::Point( 110, 10 ) );
+    
+    graficObject.DrawRectangle( &pen, Gdiplus::Rect( 20, 20, 100, 100) );
+
+}
+
 LRESULT CALLBACK WndProc(HWND hwnd,UINT message,WPARAM wParam,LPARAM lParam)
 {
+    HDC hdc;
+    PAINTSTRUCT ps;
+
     switch(message)
     {
     case WM_PAINT:
         SetWindowHandle(hwnd);
         drawStreightLine(a,b);
+
+        hdc = BeginPaint( hwnd, &ps );
+        gdiPlusRect( hdc );
+        EndPaint( hwnd, &ps );
         break;
     case WM_CLOSE: // FAIL THROUGH to call DefWindowProc
         break;
@@ -117,8 +138,14 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT message,WPARAM wParam,LPARAM lParam)
     }
     return DefWindowProc(hwnd,message,wParam,lParam);
 }
+
 int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,int iCmdShow)
 {
+    //initialize GDI+
+    Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+    ULONG_PTR gdiplusToken;
+    Gdiplus::GdiplusStartup( &gdiplusToken, &gdiplusStartupInput, nullptr );
+
     static TCHAR szAppName[] = TEXT("Test");
     WNDCLASS wndclass;
     wndclass.style         = CS_HREDRAW|CS_VREDRAW ;
@@ -163,6 +190,8 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,i
         TranslateMessage(& msg);
         DispatchMessage(& msg);
     }
+
+    Gdiplus::GdiplusShutdown( gdiplusToken );
     return 0;
 }
 
