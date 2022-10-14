@@ -14,7 +14,6 @@ SET(SRCFILES
 	${SRC} 
 	${HEADERS}
 )
-message( SRCFILES: ${SRCFILES})
 
 include_directories(src src/board)
 
