@@ -1,116 +1,15 @@
 #include <iostream>
-#include <stdio.h>
-#include <io.h>
-#include <fcntl.h>
 #include <Windows.h>
-#include "board.hpp"
 #include <gdiplus.h>
-
-#define GUIBOARD
-
-#ifdef CONSOLEBOARD
-
-//===================TEST OPEN NEW CONSOLE==================
-int APIENTRY WinMain(HINSTANCE hInstance,
-                     HINSTANCE hPrevInstance,
-                     LPSTR     lpCmdLine,
-                     int       nCmdShow)
-{
-    AllocConsole();
-
-    HANDLE handle_out = GetStdHandle(STD_OUTPUT_HANDLE);
-    int hCrt = _open_osfhandle((long) handle_out, _O_TEXT);
-    FILE* hf_out = _fdopen(hCrt, "w");
-    setvbuf(hf_out, NULL, _IONBF, 1);
-    *stdout = *hf_out;
-
-    HANDLE handle_in = GetStdHandle(STD_INPUT_HANDLE);
-    hCrt = _open_osfhandle((long) handle_in, _O_TEXT);
-    FILE* hf_in = _fdopen(hCrt, "r");
-    setvbuf(hf_in, NULL, _IONBF, 128);
-    *stdin = *hf_in;
-
-    const char consoleTitle[6] = {'c','h','e','s','s','\0'};
-    LPCSTR pConsoleTitle = consoleTitle;
-
-    SetConsoleTitle( pConsoleTitle );
-
-    HWND cmd = GetConsoleWindow();
-    HDC hDC = GetDC(cmd);
+#include "board.hpp"
 
 
-    for( int x=10; x<4000; x++)
-    {
-        SetPixel(hDC, x, 300, RGB(0xFF,0x00,0x00));
-    }
-
-    for( int r=100; r<200; r++)
-    {
-        for( int d=100; d<200; d++)
-        {
-            SetPixel(hDC, r, d, RGB(0xFF,0x00,0x00));
-        }
-    }
-
-    ReleaseDC(cmd, hDC);
-	DeleteDC(hDC);
-
-    MSG msg;
-    while(GetMessage(& msg,NULL,0,0))
-    {
-        TranslateMessage(& msg);
-        DispatchMessage(& msg);
-    }
-    // use the console just like a normal one - printf(), getchar(), ...
-}
-
-#endif
-//==========================================================
-
-#ifdef GUIBOARD
-//===================TEST CODE DRAWING PIXEL================
 static HWND sHwnd;
-static COLORREF redColor=RGB(255,0,0);
-static COLORREF blueColor=RGB(0,0,255);
-static COLORREF greenColor=RGB(0,255,0);
-
-static COORD a = {150,150};
-static COORD b = {300,300};
+static Board board;
 
 void SetWindowHandle(HWND hwnd)
 {
     sHwnd=hwnd;
-}
-void setPixel(int x,int y,COLORREF& color=redColor)
-{
-    if(sHwnd==NULL)
-    {
-        MessageBox(NULL,"sHwnd was not initialized !","Error",MB_OK|MB_ICONERROR);
-        exit(0);
-    }
-    HDC hdc=GetDC(sHwnd);
-    SetPixel(hdc,x,y,color);
-    ReleaseDC(sHwnd,hdc);
-    return;
-}
-void drawStreightLine(COORD a, COORD b)
-{
-    for( int x = a.X; x < b.X; x++ )
-    {
-        setPixel(x, a.Y, greenColor);
-    }
-}
-
-void gdiPlusRect( HDC hdc )
-{
-    Gdiplus::Graphics graficObject( hdc );
-    Gdiplus::Pen pen( Gdiplus::Color( 255, 255 , 0, 0 ), Gdiplus::REAL( 1.0F ) );
-    Gdiplus::SolidBrush brush( Gdiplus::Color( 255, 0, 255, 0) );
-
-    graficObject.DrawLine( &pen, Gdiplus::Point( 10, 10 ), Gdiplus::Point( 110, 10 ) );
-    
-    graficObject.DrawRectangle( &pen, Gdiplus::Rect( 20, 20, 100, 100) );
-
 }
 
 LRESULT CALLBACK WndProc(HWND hwnd,UINT message,WPARAM wParam,LPARAM lParam)
@@ -122,10 +21,9 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT message,WPARAM wParam,LPARAM lParam)
     {
     case WM_PAINT:
         SetWindowHandle(hwnd);
-        drawStreightLine(a,b);
-
+        
         hdc = BeginPaint( hwnd, &ps );
-        gdiPlusRect( hdc );
+        board.drawRect(hdc);
         EndPaint( hwnd, &ps );
         break;
     case WM_CLOSE: // FAIL THROUGH to call DefWindowProc
@@ -146,7 +44,7 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,i
     ULONG_PTR gdiplusToken;
     Gdiplus::GdiplusStartup( &gdiplusToken, &gdiplusStartupInput, nullptr );
 
-    static TCHAR szAppName[] = TEXT("Test");
+    static TCHAR szAppName[] = TEXT("chess");
     WNDCLASS wndclass;
     wndclass.style         = CS_HREDRAW|CS_VREDRAW ;
     wndclass.lpfnWndProc   = WndProc ;
@@ -194,5 +92,3 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,i
     Gdiplus::GdiplusShutdown( gdiplusToken );
     return 0;
 }
-
-#endif
