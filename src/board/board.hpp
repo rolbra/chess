@@ -6,4 +6,5 @@ class Board
         Board();
 
         void drawRect( HDC hdc );
+        void drawFields( HDC hdc );
 };
