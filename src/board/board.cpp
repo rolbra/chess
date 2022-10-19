@@ -30,7 +30,6 @@ void Board::drawFields( HDC hdc )
 {
     Gdiplus::Graphics graphicObject( hdc );
     Gdiplus::Pen pen( Gdiplus::Color( 255, 255 , 0, 0 ), Gdiplus::REAL( 1.0F ) );
-    Gdiplus::SolidBrush brush( Gdiplus::Color( 255, 0, 255, 0) );
 
     Gdiplus::Rect chessFields[64];
     int index = 0;
@@ -42,7 +41,25 @@ void Board::drawFields( HDC hdc )
         }
     }
 
-    graphicObject.DrawRectangles( &pen, chessFields, 64 );  
+    graphicObject.DrawRectangles( &pen, chessFields, 64 );
+}
+
+int Board::setSelected( HDC hdc, unsigned char selected )
+{
+    if( selected <= 0 )
+        return -1;
+    if( ( selected >> 4 ) > 0x07 )
+        return -2;
+    if( ( selected & 0x0F ) > 0x07 )
+        return -3;
+
+    Board::drawFields( hdc );
+
+    Gdiplus::Graphics graphicObject( hdc );
+    Gdiplus::Pen pen( Gdiplus::Color::Navy, 1.0F );
+    Gdiplus::Rect selectedRect( X + WIDTH * (selected >> 4), Y + HEIGHT * (selected & 0x0F), WIDTH, HEIGHT );
+    graphicObject.DrawRectangle( &pen, selectedRect );
+    return 0;
 }
 
 //todo: change positions to defines

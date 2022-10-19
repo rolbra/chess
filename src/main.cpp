@@ -16,15 +16,23 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT message,WPARAM wParam,LPARAM lParam)
 {
     HDC hdc;
     PAINTSTRUCT ps;
-
+    
     switch(message)
     {
     case WM_PAINT:
         SetWindowHandle(hwnd);
-        
         hdc = BeginPaint( hwnd, &ps );
+
         board.drawFields( hdc );
         board.drawCharacter( hdc );
+        EndPaint( hwnd, &ps );
+        break;
+    case WM_COMMAND:
+        SetWindowHandle(hwnd);
+        hdc = BeginPaint( hwnd, &ps );
+
+        board.setSelected( hdc, 0x34 );
+        
         EndPaint( hwnd, &ps );
         break;
     case WM_CLOSE: // FAIL THROUGH to call DefWindowProc
@@ -79,6 +87,20 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,i
         MessageBox(NULL,"Window Creation Failed!","Error",MB_OK);
         exit(0);
     }
+    
+    HWND hwndButton = CreateWindow( 
+    "BUTTON",  // Predefined class; Unicode assumed 
+    "OK",      // Button text 
+    WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+    500,         // x position 
+    500,         // y position 
+    30,        // Button width
+    20,        // Button height
+    hwnd,     // Parent window
+    NULL,       // No menu.
+    (HINSTANCE)GetWindowLongPtr( hwnd, GWLP_HINSTANCE ), 
+    NULL);      // Pointer not needed.
+
 // ShowWindow and UpdateWindow //
     ShowWindow(hwnd,iCmdShow);
     UpdateWindow(hwnd);
