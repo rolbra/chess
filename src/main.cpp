@@ -23,7 +23,8 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT message,WPARAM wParam,LPARAM lParam)
         SetWindowHandle(hwnd);
         
         hdc = BeginPaint( hwnd, &ps );
-        board.drawFields(hdc);
+        board.drawFields( hdc );
+        board.drawCharacter( hdc );
         EndPaint( hwnd, &ps );
         break;
     case WM_CLOSE: // FAIL THROUGH to call DefWindowProc
