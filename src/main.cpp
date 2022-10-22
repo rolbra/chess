@@ -7,6 +7,8 @@
 static HWND sHwnd;
 static Board board;
 
+bool button_clicked = false;
+
 void SetWindowHandle(HWND hwnd)
 {
     sHwnd=hwnd;
@@ -16,7 +18,7 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT message,WPARAM wParam,LPARAM lParam)
 {
     HDC hdc;
     PAINTSTRUCT ps;
-    
+
     switch(message)
     {
     case WM_PAINT:
@@ -25,15 +27,16 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT message,WPARAM wParam,LPARAM lParam)
 
         board.drawFields( hdc );
         board.drawCharacter( hdc );
+        if( button_clicked )
+        {
+            board.setSelected( hdc, 0x34 );
+        }
+        
         EndPaint( hwnd, &ps );
         break;
     case WM_COMMAND:
-        SetWindowHandle(hwnd);
-        hdc = BeginPaint( hwnd, &ps );
-
-        board.setSelected( hdc, 0x34 );
-        
-        EndPaint( hwnd, &ps );
+        button_clicked = !button_clicked;
+        InvalidateRect(hwnd, NULL, TRUE);
         break;
     case WM_CLOSE: // FAIL THROUGH to call DefWindowProc
         break;
