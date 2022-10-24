@@ -10,6 +10,7 @@
 //size single chessField
 #define WIDTH 50
 #define HEIGHT 50
+#define bitmapSpan 1
 
 
 Board::Board()
@@ -120,4 +121,16 @@ void Board::drawCharacter( HDC hdc )
     {
         graphicObject.DrawString( stringsNum[i], -1, &font, positionsNum[i], &stringFormat, &solidBrush );
     }
+}
+
+void Board::drawSymbols( HDC hdc )
+{
+    Gdiplus::Graphics graphicObject( hdc );
+    Gdiplus::Pen pen( Gdiplus::Color( 255, 255 , 0, 0 ), Gdiplus::REAL( 1.0F ) );
+    Gdiplus::Rect chessField;
+    
+    WCHAR *filepath = L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\tower_black.bmp";
+    Gdiplus::Bitmap tower( filepath, false );
+    
+    graphicObject.DrawImage( &tower, X + WIDTH * 0 + bitmapSpan, Y + HEIGHT * 7 + bitmapSpan );
 }

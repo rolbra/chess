@@ -9,4 +9,5 @@ class Board
         void drawFields( HDC hdc );
         int setSelected( HDC hdc, unsigned char selected );
         void drawCharacter( HDC hdc );
+        void drawSymbols( HDC hdc );    //https://stackoverflow.com/questions/24169656/drawing-to-a-gdi-bitmap
 };

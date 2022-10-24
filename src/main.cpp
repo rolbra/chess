@@ -5,6 +5,7 @@
 
 #define BTN_OK 100
 #define BTN_EXIT 101
+#define IDM_BITMAP 200
 
 static HWND sHwnd;
 static Board board;
@@ -20,6 +21,9 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT message,WPARAM wParam,LPARAM lParam)
 {
     HDC hdc;
     PAINTSTRUCT ps;
+    
+    static BITMAPINFOHEADER *pbmi = NULL;
+    static BYTE *pBuffer = NULL;
 
     switch(message)
     {
@@ -29,6 +33,7 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT message,WPARAM wParam,LPARAM lParam)
 
         board.drawFields( hdc );
         board.drawCharacter( hdc );
+        board.drawSymbols( hdc );
         if( button_clicked )
         {
             board.setSelected( hdc, 0x34 );
@@ -37,18 +42,17 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT message,WPARAM wParam,LPARAM lParam)
         EndPaint( hwnd, &ps );
         break;
     case WM_COMMAND:
-        if ( LOWORD( wParam ) == BTN_OK )
+        switch( LOWORD( wParam ) )
         {
-            button_clicked = !button_clicked;
-            InvalidateRect(hwnd, NULL, TRUE);
-            break;
+            case BTN_OK:
+                button_clicked = !button_clicked;
+                InvalidateRect(hwnd, NULL, TRUE);
+                break;
+            case BTN_EXIT:
+                PostQuitMessage(0);
+                return 0;
+            
         }
-        else if( LOWORD( wParam ) == BTN_EXIT )
-        {
-            PostQuitMessage(0);
-            return 0;
-        }
-        break;
     case WM_CLOSE: // FAIL THROUGH to call DefWindowProc
         break;
     case WM_DESTROY:
