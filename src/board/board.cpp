@@ -126,11 +126,26 @@ void Board::drawCharacter( HDC hdc )
 void Board::drawSymbols( HDC hdc )
 {
     Gdiplus::Graphics graphicObject( hdc );
-    Gdiplus::Pen pen( Gdiplus::Color( 255, 255 , 0, 0 ), Gdiplus::REAL( 1.0F ) );
-    Gdiplus::Rect chessField;
     
     WCHAR *filepath = L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\tower_black.bmp";
     Gdiplus::Bitmap tower( filepath, false );
     
     graphicObject.DrawImage( &tower, X + WIDTH * 0 + bitmapSpan, Y + HEIGHT * 7 + bitmapSpan );
+}
+
+int Board::setSymbol( HDC hdc, unsigned char position )
+{
+    if( position <= 0 )
+        return -1;
+    if( ( position >> 4 ) > 0x07 )
+        return -2;
+    if( ( position & 0x0F ) > 0x07 )
+        return -3;
+
+    Gdiplus::Graphics graphicObject( hdc );
+    
+    WCHAR *filepath = L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\tower_black.bmp";
+    Gdiplus::Bitmap tower( filepath, false );
+    
+    graphicObject.DrawImage( &tower, X + WIDTH * ( position >> 4 ) + bitmapSpan, Y + HEIGHT * ( position & 0x0F ) + bitmapSpan );
 }

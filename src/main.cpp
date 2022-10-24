@@ -34,9 +34,11 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT message,WPARAM wParam,LPARAM lParam)
         board.drawFields( hdc );
         board.drawCharacter( hdc );
         board.drawSymbols( hdc );
+        board.setSymbol( hdc, 0x77 );
         if( button_clicked )
         {
             board.setSelected( hdc, 0x34 );
+            board.setSymbol( hdc, 0x34 );
         }
         
         EndPaint( hwnd, &ps );
