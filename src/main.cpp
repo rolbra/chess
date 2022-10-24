@@ -3,6 +3,8 @@
 #include <gdiplus.h>
 #include "board.hpp"
 
+#define BTN_OK 100
+#define BTN_EXIT 101
 
 static HWND sHwnd;
 static Board board;
@@ -35,8 +37,17 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT message,WPARAM wParam,LPARAM lParam)
         EndPaint( hwnd, &ps );
         break;
     case WM_COMMAND:
-        button_clicked = !button_clicked;
-        InvalidateRect(hwnd, NULL, TRUE);
+        if ( LOWORD( wParam ) == BTN_OK )
+        {
+            button_clicked = !button_clicked;
+            InvalidateRect(hwnd, NULL, TRUE);
+            break;
+        }
+        else if( LOWORD( wParam ) == BTN_EXIT )
+        {
+            PostQuitMessage(0);
+            return 0;
+        }
         break;
     case WM_CLOSE: // FAIL THROUGH to call DefWindowProc
         break;
@@ -91,18 +102,33 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,i
         exit(0);
     }
     
-    HWND hwndButton = CreateWindow( 
+    //Create Button OK
+    HWND hwndButtonOk = CreateWindow( 
     "BUTTON",  // Predefined class; Unicode assumed 
     "OK",      // Button text 
     WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
-    500,         // x position 
+    400,         // x position 
     500,         // y position 
     30,        // Button width
     20,        // Button height
     hwnd,     // Parent window
-    NULL,       // No menu.
+    ( HMENU ) BTN_OK,       // No menu.
     (HINSTANCE)GetWindowLongPtr( hwnd, GWLP_HINSTANCE ), 
     NULL);      // Pointer not needed.
+
+    //Create Button Exit
+    HWND hwndButtonExit = CreateWindow( 
+    "BUTTON",
+    "Exit",
+    WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+    450,
+    500,
+    30,
+    20,
+    hwnd,
+    ( HMENU ) BTN_EXIT,
+    (HINSTANCE)GetWindowLongPtr( hwnd, GWLP_HINSTANCE ), 
+    NULL);
 
 // ShowWindow and UpdateWindow //
     ShowWindow(hwnd,iCmdShow);

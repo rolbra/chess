@@ -56,7 +56,7 @@ int Board::setSelected( HDC hdc, unsigned char selected )
     Board::drawFields( hdc );
 
     Gdiplus::Graphics graphicObject( hdc );
-    Gdiplus::Pen pen( Gdiplus::Color::Navy, 1.0F );
+    Gdiplus::Pen pen( Gdiplus::Color::Navy, 3.0F );
     Gdiplus::Rect selectedRect( X + WIDTH * (selected >> 4), Y + HEIGHT * (selected & 0x0F), WIDTH, HEIGHT );
     graphicObject.DrawRectangle( &pen, selectedRect );
     return 0;
