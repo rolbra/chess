@@ -13,6 +13,5 @@ class Board
         void init( HDC hdc );
         int setSelected( unsigned char selected );
         void drawCharacter();
-        void drawSymbols();    //https://stackoverflow.com/questions/24169656/drawing-to-a-gdi-bitmap
-        int setSymbol( /*unsigned char figure,*/ unsigned char position );
+        int setFigures( /*unsigned char figure,*/ unsigned char *positions, int arrayLength );
 };

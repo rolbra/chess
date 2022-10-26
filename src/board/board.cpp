@@ -60,8 +60,6 @@ void Board::init( HDC hdc )
     this->currentHdc = hdc;
     drawFields();
     drawCharacter();
-    drawSymbols();
-    setSymbol( 0x77 );
     this->currentHdc = nullptr;
 }
 
@@ -143,29 +141,25 @@ void Board::drawCharacter()
     }
 }
 
-void Board::drawSymbols()
+int Board::setFigures( unsigned char *positions, int arrayLength )
 {
-    Gdiplus::Graphics graphicObject( this->currentHdc );
-    
-    WCHAR *filepath = L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\tower_black.bmp";
-    Gdiplus::Bitmap tower( filepath, false );
-    
-    graphicObject.DrawImage( &tower, X + WIDTH * 0 + bitmapSpan, Y + HEIGHT * 7 + bitmapSpan );
-}
-
-int Board::setSymbol( unsigned char position )
-{
-    if( position <= 0 )
+    //check array data
+    /*if( position <= 0 )
         return -1;
     if( ( position >> 4 ) > 0x07 )
         return -2;
     if( ( position & 0x0F ) > 0x07 )
         return -3;
+    */
 
     Gdiplus::Graphics graphicObject( this->currentHdc );
     
     WCHAR *filepath = L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\tower_black.bmp";
     Gdiplus::Bitmap tower( filepath, false );
     
-    graphicObject.DrawImage( &tower, X + WIDTH * ( position >> 4 ) + bitmapSpan, Y + HEIGHT * ( position & 0x0F ) + bitmapSpan );
+    for( int i = 0; i < arrayLength; i++ )
+    {
+        graphicObject.DrawImage( &tower, X + WIDTH * ( positions[i] >> 4 ) + bitmapSpan, Y + HEIGHT * ( positions[i] & 0x0F ) + bitmapSpan );
+    }
+    return 0;
 }

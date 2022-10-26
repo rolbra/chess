@@ -6,6 +6,9 @@
 
 #define BTN_OK 100
 #define BTN_EXIT 101
+#define BTN_SETUP 102
+#define BTN_MOVE 103
+
 #define IDM_BITMAP 200
 
 static HWND sHwnd;
@@ -14,6 +17,8 @@ static Referee referee;
 
 bool init = false;
 bool button_clicked = false;
+bool button_setup = false;
+bool button_move = false;
 
 void SetWindowHandle(HWND hwnd)
 {
@@ -28,16 +33,31 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT message,WPARAM wParam,LPARAM lParam)
     static BITMAPINFOHEADER *pbmi = NULL;
     static BYTE *pBuffer = NULL;
 
+    LPRECT invalidRect = new RECT();
+    invalidRect->top = 0;
+    invalidRect->left = 0;
+    invalidRect->bottom = 600;
+    invalidRect->right = 600;
+
+    static unsigned char turn = 0;
+
     switch(message)
     {
     case WM_PAINT:
         SetWindowHandle(hwnd);
         hdc = BeginPaint( hwnd, &ps );
 
-        if( init == false )
+        board.init( hdc );
+        if( button_setup == true )
         {
-            board.init( hdc );
-            init = true;
+            referee.setup( hdc );
+            button_setup = false;
+        }
+        if( button_move == true )
+        {
+            referee.move( hdc, 0x77 - ( turn + 1 ) );
+            turn++;
+            button_move = false;
         }
         if( button_clicked )
         {
@@ -53,7 +73,15 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT message,WPARAM wParam,LPARAM lParam)
         {
             case BTN_OK:
                 button_clicked = !button_clicked;
-                InvalidateRect(hwnd, NULL, TRUE);
+                InvalidateRect( hwnd, invalidRect, TRUE );
+                break;
+            case BTN_SETUP:
+                button_setup = true;
+                InvalidateRect( hwnd, invalidRect, TRUE );
+                break;
+            case BTN_MOVE:
+                button_move = true;
+                InvalidateRect( hwnd, invalidRect, TRUE );
                 break;
             case BTN_EXIT:
                 PostQuitMessage(0);
@@ -138,6 +166,34 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,i
     20,
     hwnd,
     ( HMENU ) BTN_EXIT,
+    (HINSTANCE)GetWindowLongPtr( hwnd, GWLP_HINSTANCE ), 
+    NULL);
+
+    //Create Button Setup
+    HWND hwndButtonSetup = CreateWindow( 
+    "BUTTON",
+    "Setup",
+    WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+    250,
+    500,
+    50,
+    20,
+    hwnd,
+    ( HMENU ) BTN_SETUP,
+    (HINSTANCE)GetWindowLongPtr( hwnd, GWLP_HINSTANCE ), 
+    NULL);
+
+    //Create Button Setup
+    HWND hwndButtonMove = CreateWindow( 
+    "BUTTON",
+    "Move",
+    WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+    300,
+    500,
+    50,
+    20,
+    hwnd,
+    ( HMENU ) BTN_MOVE,
     (HINSTANCE)GetWindowLongPtr( hwnd, GWLP_HINSTANCE ), 
     NULL);
 
