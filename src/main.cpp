@@ -4,6 +4,9 @@
 #include "board.hpp"
 #include "referee.hpp"
 
+#define WINDOW_HEIGHT 600
+#define WINDOW_WIDTH 600
+
 #define BTN_OK 100
 #define BTN_EXIT 101
 #define BTN_SETUP 102
@@ -129,8 +132,8 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,i
                            WS_OVERLAPPEDWINDOW,
                            CW_USEDEFAULT,
                            CW_USEDEFAULT,
-                           CW_USEDEFAULT,
-                           CW_USEDEFAULT,
+                           WINDOW_WIDTH,
+                           WINDOW_HEIGHT,
                            NULL,
                            NULL,
                            hInstance,
