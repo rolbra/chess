@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include <gdiplus.h>
 #include "board.hpp"
+#include "referee.hpp"
 
 #define BTN_OK 100
 #define BTN_EXIT 101
@@ -9,7 +10,9 @@
 
 static HWND sHwnd;
 static Board board;
+static Referee referee;
 
+bool init = false;
 bool button_clicked = false;
 
 void SetWindowHandle(HWND hwnd)
@@ -31,14 +34,16 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT message,WPARAM wParam,LPARAM lParam)
         SetWindowHandle(hwnd);
         hdc = BeginPaint( hwnd, &ps );
 
-        board.drawFields( hdc );
-        board.drawCharacter( hdc );
-        board.drawSymbols( hdc );
-        board.setSymbol( hdc, 0x77 );
+        if( init == false )
+        {
+            board.init( hdc );
+            init = true;
+        }
         if( button_clicked )
         {
-            board.setSelected( hdc, 0x34 );
-            board.setSymbol( hdc, 0x34 );
+            referee.move( hdc, 0x34 );
+            // board.setSelected( hdc, 0x34 );
+            // board.setSymbol( hdc, 0x34 );
         }
         
         EndPaint( hwnd, &ps );

@@ -18,18 +18,28 @@ Board::Board()
     std::cout << "init Chess Board" << std::endl;
 }
 
-void Board::drawRect( HDC hdc )
+void Board::setHdc( HDC hdc )
 {
-    Gdiplus::Graphics graficObject( hdc );
+    this->currentHdc = hdc;
+}
+
+void Board::unsetHdc()
+{
+    this->currentHdc = nullptr;
+}
+
+void Board::drawRect()
+{
+    Gdiplus::Graphics graficObject( this->currentHdc );
     Gdiplus::Pen pen( Gdiplus::Color( 255, 255 , 0, 0 ), Gdiplus::REAL( 1.0F ) );
     Gdiplus::SolidBrush brush( Gdiplus::Color( 255, 0, 255, 0) );
     
     graficObject.DrawRectangle( &pen, Gdiplus::Rect( 20, 20, 100, 100) );
 }
 
-void Board::drawFields( HDC hdc )
+void Board::drawFields()
 {
-    Gdiplus::Graphics graphicObject( hdc );
+    Gdiplus::Graphics graphicObject( this->currentHdc );
     Gdiplus::Pen pen( Gdiplus::Color( 255, 255 , 0, 0 ), Gdiplus::REAL( 1.0F ) );
 
     Gdiplus::Rect chessFields[64];
@@ -45,7 +55,17 @@ void Board::drawFields( HDC hdc )
     graphicObject.DrawRectangles( &pen, chessFields, 64 );
 }
 
-int Board::setSelected( HDC hdc, unsigned char selected )
+void Board::init( HDC hdc )
+{
+    this->currentHdc = hdc;
+    drawFields();
+    drawCharacter();
+    drawSymbols();
+    setSymbol( 0x77 );
+    this->currentHdc = nullptr;
+}
+
+int Board::setSelected( unsigned char selected )
 {
     if( selected <= 0 )
         return -1;
@@ -54,9 +74,9 @@ int Board::setSelected( HDC hdc, unsigned char selected )
     if( ( selected & 0x0F ) > 0x07 )
         return -3;
 
-    Board::drawFields( hdc );
+    drawFields();
 
-    Gdiplus::Graphics graphicObject( hdc );
+    Gdiplus::Graphics graphicObject( this->currentHdc );
     Gdiplus::Pen pen( Gdiplus::Color::Navy, 3.0F );
     Gdiplus::Rect selectedRect( X + WIDTH * (selected >> 4), Y + HEIGHT * (selected & 0x0F), WIDTH, HEIGHT );
     graphicObject.DrawRectangle( &pen, selectedRect );
@@ -64,9 +84,9 @@ int Board::setSelected( HDC hdc, unsigned char selected )
 }
 
 //todo: change positions to defines
-void Board::drawCharacter( HDC hdc )
+void Board::drawCharacter()
 {
-    Gdiplus::Graphics graphicObject( hdc );
+    Gdiplus::Graphics graphicObject( this->currentHdc );
     Gdiplus::Pen pen( Gdiplus::Color( 255, 255 , 0, 0 ), Gdiplus::REAL( 1.0F ) );
     Gdiplus::SolidBrush solidBrush( Gdiplus::Color( 255, 0, 0, 255 ) );
 
@@ -123,9 +143,9 @@ void Board::drawCharacter( HDC hdc )
     }
 }
 
-void Board::drawSymbols( HDC hdc )
+void Board::drawSymbols()
 {
-    Gdiplus::Graphics graphicObject( hdc );
+    Gdiplus::Graphics graphicObject( this->currentHdc );
     
     WCHAR *filepath = L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\tower_black.bmp";
     Gdiplus::Bitmap tower( filepath, false );
@@ -133,7 +153,7 @@ void Board::drawSymbols( HDC hdc )
     graphicObject.DrawImage( &tower, X + WIDTH * 0 + bitmapSpan, Y + HEIGHT * 7 + bitmapSpan );
 }
 
-int Board::setSymbol( HDC hdc, unsigned char position )
+int Board::setSymbol( unsigned char position )
 {
     if( position <= 0 )
         return -1;
@@ -142,7 +162,7 @@ int Board::setSymbol( HDC hdc, unsigned char position )
     if( ( position & 0x0F ) > 0x07 )
         return -3;
 
-    Gdiplus::Graphics graphicObject( hdc );
+    Gdiplus::Graphics graphicObject( this->currentHdc );
     
     WCHAR *filepath = L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\tower_black.bmp";
     Gdiplus::Bitmap tower( filepath, false );
