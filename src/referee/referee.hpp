@@ -4,7 +4,7 @@ class Referee
         HDC currentHdc;
         Board *board;
         void initFigurePositions();
-        unsigned char figurePositions[2];
+        unsigned char figurePositions[16];
     public:
         Referee();
         ~Referee();

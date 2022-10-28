@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include <gdiplus.h>
 #include "board.hpp"
+#include <array>
 
 //start coordinate chessField
 #define X 40
@@ -12,6 +13,7 @@
 #define HEIGHT 50
 #define bitmapSpan 1
 
+#define FIGURESIZE L"48"
 
 Board::Board()
 {
@@ -43,12 +45,19 @@ void Board::drawFields()
     Gdiplus::Pen pen( Gdiplus::Color( 255, 255 , 0, 0 ), Gdiplus::REAL( 1.0F ) );
 
     Gdiplus::Rect chessFields[64];
+    
+    //Gdiplus::Brush *sb( WHITE_BRUSH );
+    Gdiplus::SolidBrush blackBrush(Gdiplus::Color(255, 0, 0, 0));
+
     int index = 0;
     for( int x = 0; x < 8; x++ )
     {
         for( int y = 0; y < 8; y++ )
         {
-            chessFields[index++] = Gdiplus::Rect( X + WIDTH * x, Y + HEIGHT * y, WIDTH, HEIGHT );
+            chessFields[index] = Gdiplus::Rect( X + WIDTH * x, Y + HEIGHT * y, WIDTH, HEIGHT );
+            if( ( x % 2 == 0 ) && ( y % 2 == 0) || ( x % 2 == 1 ) && ( y % 2 == 1 ) )
+                graphicObject.FillRectangle( &blackBrush, chessFields[index] );
+            index++;
         }
     }
 
@@ -153,13 +162,26 @@ int Board::setFigures( unsigned char *positions, int arrayLength )
     */
 
     Gdiplus::Graphics graphicObject( this->currentHdc );
+
+    Gdiplus::Bitmap rook( L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\rook_black_48p.bmp", false );
+    Gdiplus::Bitmap knight( L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\knight_black_48p.bmp", false );
+    Gdiplus::Bitmap bishop( L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\bishop_black_48p.bmp", false );
+    Gdiplus::Bitmap king( L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\king_black_48p.bmp", false );
+    Gdiplus::Bitmap queen( L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\queen_black_48p.bmp", false );
+    Gdiplus::Bitmap pawn( L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\pawn_black_48p.bmp", false );
+
+    std::array<Gdiplus::Bitmap*, 8> figures{ &rook, &knight, &bishop, &queen, &king, &bishop, &knight, &rook };
     
-    WCHAR *filepath = L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\tower_black.bmp";
-    Gdiplus::Bitmap tower( filepath, false );
-    
-    for( int i = 0; i < arrayLength; i++ )
+    int i = 0;
+    //draw first row
+    for( ; i < arrayLength / 2; i++ )
     {
-        graphicObject.DrawImage( &tower, X + WIDTH * ( positions[i] >> 4 ) + bitmapSpan, Y + HEIGHT * ( positions[i] & 0x0F ) + bitmapSpan );
+        graphicObject.DrawImage( figures[i], X + WIDTH * ( positions[i] >> 4 ) + bitmapSpan, Y + HEIGHT * ( positions[i] & 0x0F ) + bitmapSpan );
+    }
+    //draw second row
+    for( ; i < arrayLength; i++ )
+    {
+        graphicObject.DrawImage( &pawn, X + WIDTH * ( positions[i] >> 4 ) + bitmapSpan, Y + HEIGHT * ( positions[i] & 0x0F ) + bitmapSpan );
     }
     return 0;
 }
