@@ -11,7 +11,7 @@
 //size single chessField
 #define WIDTH 50
 #define HEIGHT 50
-#define bitmapSpan 1
+#define BITMAP_SPAN 1
 
 #define FIGURESIZE L"48"
 
@@ -46,8 +46,7 @@ void Board::drawFields()
 
     Gdiplus::Rect chessFields[64];
     
-    //Gdiplus::Brush *sb( WHITE_BRUSH );
-    Gdiplus::SolidBrush blackBrush(Gdiplus::Color(255, 0, 0, 0));
+    Gdiplus::SolidBrush blackBrush(Gdiplus::Color(75, 0, 0, 0));
 
     int index = 0;
     for( int x = 0; x < 8; x++ )
@@ -150,6 +149,44 @@ void Board::drawCharacter()
     }
 }
 
+int Board::setFigure( unsigned char position, Figure type )
+{
+    Gdiplus::Graphics graphicObject( this->currentHdc );
+    Gdiplus::Bitmap *figure;
+    
+    switch ( type )
+    {
+    case Figure::rook:
+        figure = new Gdiplus::Bitmap( L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\rook_black_48p.bmp", false );
+        break;
+    case Figure::knight:
+        figure = new Gdiplus::Bitmap( L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\knight_black_48p.bmp", false );
+        break;
+    case Figure::bishop:
+        figure = new Gdiplus::Bitmap( L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\bishop_black_48p.bmp", false );
+        break;
+    case Figure::king:
+        figure = new Gdiplus::Bitmap( L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\king_black_48p.bmp", false );
+        break;
+    case Figure::queen:
+        figure = new Gdiplus::Bitmap( L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\queen_black_48p.bmp", false );
+        break;
+    case Figure::pawn:
+        figure = new Gdiplus::Bitmap( L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\pawn_black_48p.bmp", false );
+        break;
+    default:
+        return -1;
+    }
+
+    if( !figure )
+        return -1;
+
+    graphicObject.DrawImage( figure, X + WIDTH * ( position >> 4 ) + BITMAP_SPAN, Y + HEIGHT * ( position & 0x0F ) + BITMAP_SPAN );
+
+    delete figure;
+    return 0;
+}
+
 int Board::setFigures( unsigned char *positions, int arrayLength )
 {
     //check array data
@@ -162,26 +199,26 @@ int Board::setFigures( unsigned char *positions, int arrayLength )
     */
 
     Gdiplus::Graphics graphicObject( this->currentHdc );
-
+    //https://learn.microsoft.com/de-de/windows/win32/gdiplus/-gdiplus-using-a-color-remap-table-use?redirectedfrom=MSDN
     Gdiplus::Bitmap rook( L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\rook_black_48p.bmp", false );
     Gdiplus::Bitmap knight( L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\knight_black_48p.bmp", false );
     Gdiplus::Bitmap bishop( L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\bishop_black_48p.bmp", false );
     Gdiplus::Bitmap king( L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\king_black_48p.bmp", false );
     Gdiplus::Bitmap queen( L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\queen_black_48p.bmp", false );
     Gdiplus::Bitmap pawn( L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\pawn_black_48p.bmp", false );
-
-    std::array<Gdiplus::Bitmap*, 8> figures{ &rook, &knight, &bishop, &queen, &king, &bishop, &knight, &rook };
     
+    std::array<Gdiplus::Bitmap*, 8> figurePositions{ &rook, &knight, &bishop, &queen, &king, &bishop, &knight, &rook };
+
     int i = 0;
     //draw first row
     for( ; i < arrayLength / 2; i++ )
     {
-        graphicObject.DrawImage( figures[i], X + WIDTH * ( positions[i] >> 4 ) + bitmapSpan, Y + HEIGHT * ( positions[i] & 0x0F ) + bitmapSpan );
+        graphicObject.DrawImage( figurePositions[i], X + WIDTH * ( positions[i] >> 4 ) + BITMAP_SPAN, Y + HEIGHT * ( positions[i] & 0x0F ) + BITMAP_SPAN );
     }
     //draw second row
     for( ; i < arrayLength; i++ )
     {
-        graphicObject.DrawImage( &pawn, X + WIDTH * ( positions[i] >> 4 ) + bitmapSpan, Y + HEIGHT * ( positions[i] & 0x0F ) + bitmapSpan );
+        graphicObject.DrawImage( &pawn, X + WIDTH * ( positions[i] >> 4 ) + BITMAP_SPAN, Y + HEIGHT * ( positions[i] & 0x0F ) + BITMAP_SPAN );
     }
     return 0;
 }
