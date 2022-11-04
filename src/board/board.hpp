@@ -1,12 +1,5 @@
-enum class Figure
-{
-    rook,
-    knight,
-    bishop,
-    queen,
-    king,
-    pawn
-};
+//todo: move include to cpp file
+#include "figures.hpp"
 
 class Board
 {
@@ -33,9 +26,9 @@ class Board
         //frame a specific field
         int setSelected( unsigned char selected );
         
-        int setFigure( unsigned char position, Figure type );
+        int drawFigure( unsigned char position, Figure *figure );
 
         //positions for every figure stored in a char array
         //[black[rook0][knight0][bishop0][king][queen][bishop1]...][white[rook0]...]
-        int setFigures( unsigned char *positions, int arrayLength );
+        int drawFigures( unsigned char *positions, int arrayLength );
 };

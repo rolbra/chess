@@ -57,8 +57,11 @@ int Referee::setup( HDC hdc )
 
     //place all figures
     initFigurePositions();
-    board->setFigures( figurePositions, sizeof( figurePositions ) );
-
+    board->drawFigures( figurePositions, sizeof( figurePositions ) );
+    Rook rook0;
+    Queen queen;
+    board->drawFigure( 0x33, &rook0 );
+    board->drawFigure( 0x34, &queen );
     board->unsetHdc();
     return 0;
 }

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <Windows.h>
 #include <gdiplus.h>
+
 #include "board.hpp"
 #include <array>
 
@@ -149,45 +150,19 @@ void Board::drawCharacter()
     }
 }
 
-int Board::setFigure( unsigned char position, Figure type )
+int Board::drawFigure( unsigned char position, Figure *figure )
 {
     Gdiplus::Graphics graphicObject( this->currentHdc );
-    Gdiplus::Bitmap *figure;
     
-    switch ( type )
-    {
-    case Figure::rook:
-        figure = new Gdiplus::Bitmap( L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\rook_black_48p.bmp", false );
-        break;
-    case Figure::knight:
-        figure = new Gdiplus::Bitmap( L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\knight_black_48p.bmp", false );
-        break;
-    case Figure::bishop:
-        figure = new Gdiplus::Bitmap( L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\bishop_black_48p.bmp", false );
-        break;
-    case Figure::king:
-        figure = new Gdiplus::Bitmap( L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\king_black_48p.bmp", false );
-        break;
-    case Figure::queen:
-        figure = new Gdiplus::Bitmap( L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\queen_black_48p.bmp", false );
-        break;
-    case Figure::pawn:
-        figure = new Gdiplus::Bitmap( L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\pawn_black_48p.bmp", false );
-        break;
-    default:
-        return -1;
-    }
-
-    if( !figure )
+    if( figure == nullptr )
         return -1;
 
-    graphicObject.DrawImage( figure, X + WIDTH * ( position >> 4 ) + BITMAP_SPAN, Y + HEIGHT * ( position & 0x0F ) + BITMAP_SPAN );
+    graphicObject.DrawImage( figure->bitmap, X + WIDTH * ( position >> 4 ) + BITMAP_SPAN, Y + HEIGHT * ( position & 0x0F ) + BITMAP_SPAN );
 
-    delete figure;
     return 0;
 }
 
-int Board::setFigures( unsigned char *positions, int arrayLength )
+int Board::drawFigures( unsigned char *positions, int arrayLength )
 {
     //check array data
     /*if( position <= 0 )
