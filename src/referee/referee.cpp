@@ -1,5 +1,7 @@
 #include <Windows.h>
 #include <iostream>
+#include <gdiplus.h>
+#include "figures.hpp"
 #include "board.hpp"
 #include "referee.hpp"
 

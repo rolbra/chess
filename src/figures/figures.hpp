@@ -1,5 +1,4 @@
-#include <Windows.h>
-#include <gdiplus.h>
+
 
 enum class FigureType
 {

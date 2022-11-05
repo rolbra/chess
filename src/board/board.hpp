@@ -1,5 +1,4 @@
-//todo: move include to cpp file
-#include "figures.hpp"
+
 
 class Board
 {
