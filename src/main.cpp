@@ -1,6 +1,8 @@
 // https://cplusplus.com/articles/Gw6AC542/
 
 #include "referee.hpp"
+#include "player.hpp"
+#include "input.hpp"
 
 #define WINDOW_HEIGHT 600
 #define WINDOW_WIDTH 600
@@ -12,8 +14,16 @@
 
 #define IDM_BITMAP 200
 
+#define TXT_USR_INPUT 300
+
+
 static HWND sHwnd;
+HWND output;
+HWND hwndTxtUsrInput;
+
 static Referee referee;
+static Player player0;
+static Input input;
 
 bool init = false;
 bool button_clicked = false;
@@ -39,10 +49,15 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT message,WPARAM wParam,LPARAM lParam)
     invalidRect->bottom = 600;
     invalidRect->right = 600;
 
-    static unsigned char turn = 0;
-
     switch(message)
     {
+    case WM_CREATE:
+        output = CreateWindow("EDIT",
+                                   "",
+                                   WS_BORDER | WS_CHILD | WS_VISIBLE,
+                                   100, 530, 390, 20,
+                                   hwnd, (HMENU) 1, NULL, NULL);
+        break;
     case WM_PAINT:
         SetWindowHandle(hwnd);
         hdc = BeginPaint( hwnd, &ps );
@@ -53,11 +68,16 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT message,WPARAM wParam,LPARAM lParam)
             referee.board->init();
             referee.setup( hdc );
             button_setup = false;
+            //test
+            int len = GetWindowTextW( hwndTxtUsrInput, input.input, 64 );
+            input.checkInputWChar();
+            //SendMessage(hwndTxtUsrInput,WM_SETTEXT,NULL,&input.input);
+            //SendMessage( output, WM_SETTEXT, NULL, (LPARAM) input.input ); 
+            SetWindowTextW( output, input.input );
         }
         if( button_move == true )
         {
-            referee.move( hdc, 0x77 - ( turn + 1 ) );
-            turn++;
+            
             button_move = false;
         }
         if( button_clicked )
@@ -67,6 +87,13 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT message,WPARAM wParam,LPARAM lParam)
         
         EndPaint( hwnd, &ps );
         break;
+    case WM_CHAR:
+        case 0x0D: 
+                    
+            // Process a carriage return. 
+            button_setup = true;
+            InvalidateRect( hwnd, invalidRect, TRUE );
+            break; 
     case WM_COMMAND:
         switch( LOWORD( wParam ) )
         {
@@ -195,6 +222,12 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,i
     ( HMENU ) BTN_MOVE,
     (HINSTANCE)GetWindowLongPtr( hwnd, GWLP_HINSTANCE ), 
     NULL);
+
+    hwndTxtUsrInput = CreateWindow("edit", "",
+    WS_VISIBLE | WS_CHILD | WS_BORDER | ES_AUTOHSCROLL,
+    50 ,530 ,50 ,20 ,
+    hwnd, (HMENU) TXT_USR_INPUT, (HINSTANCE)GetWindowLongPtr( hwnd, GWLP_HINSTANCE ), NULL
+    ); /* Text Input field */
 
 // ShowWindow and UpdateWindow //
     ShowWindow(hwnd,iCmdShow);
