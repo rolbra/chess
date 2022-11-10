@@ -17,7 +17,6 @@ int Referee::setup( HDC hdc )
 
     //place all figures
     board->drawFigures();
-    board->drawFigure( board->)
 
     board->unsetHdc();
     return 0;
