@@ -4,8 +4,8 @@ project(chess)
 FILE(GLOB HEADERS_LOCAL src/*.hpp)
 FILE(GLOB SRC_LOCAL src/*.cpp)
 
-FILE(GLOB_RECURSE HEADERS_EXTERNAL src/board/*.h src/referee/*.h src/figures/*h)
-FILE(GLOB_RECURSE SRC_EXTERNAL src/board/*.cpp src/referee/*.cpp src/figures/*cpp)
+FILE(GLOB_RECURSE HEADERS_EXTERNAL src/gui/*.h src/logic/*.h)
+FILE(GLOB_RECURSE SRC_EXTERNAL src/gui/*.cpp src/logic/*.cpp)
 
 SET(HEADERS ${HEADERS_LOCAL} ${HEADERS_EXTERNAL})
 SET(SRC ${SRC_LOCAL} ${SRC_EXTERNAL})
@@ -15,7 +15,7 @@ SET(SRCFILES
 	${HEADERS}
 )
 
-include_directories(src src/board src/referee src/figures)
+include_directories(src src/gui src/logic)
 
 add_executable(chess WIN32 ${SRCFILES})
 
