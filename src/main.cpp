@@ -1,8 +1,5 @@
-#include <iostream>
-#include <Windows.h>
-#include <gdiplus.h>
-#include "figures.hpp"
-#include "board.hpp"
+// https://cplusplus.com/articles/Gw6AC542/
+
 #include "referee.hpp"
 
 #define WINDOW_HEIGHT 600
@@ -16,7 +13,6 @@
 #define IDM_BITMAP 200
 
 static HWND sHwnd;
-static Board board;
 static Referee referee;
 
 bool init = false;
@@ -51,9 +47,10 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT message,WPARAM wParam,LPARAM lParam)
         SetWindowHandle(hwnd);
         hdc = BeginPaint( hwnd, &ps );
 
-        board.init( hdc );
+        referee.board->init( hdc );
         if( button_setup == true )
         {
+            referee.board->init();
             referee.setup( hdc );
             button_setup = false;
         }
@@ -66,8 +63,6 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT message,WPARAM wParam,LPARAM lParam)
         if( button_clicked )
         {
             referee.move( hdc, 0x34 );
-            // board.setSelected( hdc, 0x34 );
-            // board.setSymbol( hdc, 0x34 );
         }
         
         EndPaint( hwnd, &ps );

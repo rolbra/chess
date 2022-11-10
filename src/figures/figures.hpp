@@ -1,4 +1,8 @@
+#pragma once
 
+#include <Windows.h>
+#include <gdiplus.h>
+#include <string>
 
 enum class FigureType
 {
@@ -14,7 +18,11 @@ class Figure{
     public:
         FigureType type;
         Gdiplus::Bitmap *bitmap;
+        unsigned char position;
 
+        Figure();
+        Figure( unsigned char position );
+        ~Figure();
         FigureType getType();
         void setBitmap();
         //bmp filepath
@@ -23,9 +31,40 @@ class Figure{
         //todo: move counter
 };
 
-class Rook : public Figure{ public: Rook(); };
-class Knight : public Figure{ public: Knight(); };
-class Bishop : public Figure{ public: Bishop(); };
-class King : public Figure{ public: King(); };
-class Queen : public Figure{ public: Queen(); };
-class Pawn : public Figure{ public: Pawn(); };
+class Rook : public Figure
+{
+    public: 
+        Rook();
+        Rook( unsigned char position );
+};
+
+class Knight : public Figure
+{ 
+    public: 
+        Knight();
+        Knight( unsigned char position );
+};
+
+class Bishop : public Figure{ 
+    public: 
+        Bishop();
+        Bishop( unsigned char position );
+};
+
+class King : public Figure{ 
+    public: 
+        King();
+        King( unsigned char position );
+};
+
+class Queen : public Figure{ 
+    public: 
+        Queen();
+        Queen( unsigned char position );
+};
+
+class Pawn : public Figure{ 
+    public: 
+        Pawn();
+        Pawn( unsigned char position );
+};

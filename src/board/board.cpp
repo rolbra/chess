@@ -1,9 +1,4 @@
-#include <iostream>
-#include <Windows.h>
-#include <gdiplus.h>
-#include "figures.hpp"
 #include "board.hpp"
-#include <array>
 
 //start coordinate chessField
 #define X 40
@@ -19,6 +14,32 @@
 Board::Board()
 {
     std::cout << "init Chess Board" << std::endl;
+}
+
+Board::~Board()
+{
+    for( int i = 0; i < 16; i++ )
+        delete figuresBlack[i];
+}
+
+void Board::init()
+{
+    figuresBlack[0] = new Rook( 0x07 );
+    figuresBlack[1] = new Knight( 0x17 );
+    figuresBlack[2] = new Bishop( 0x27 );
+    figuresBlack[3] = new Queen( 0x37 );
+    figuresBlack[4] = new King( 0x47 );
+    figuresBlack[5] = new Bishop( 0x57 );
+    figuresBlack[6] = new Knight( 0x67 );
+    figuresBlack[7] = new Rook( 0x77 );
+    figuresBlack[8] = new Pawn( 0x06 );
+    figuresBlack[9] = new Pawn( 0x16 );
+    figuresBlack[10] = new Pawn( 0x26 );
+    figuresBlack[11] = new Pawn( 0x36 );
+    figuresBlack[12] = new Pawn( 0x46 );
+    figuresBlack[13] = new Pawn( 0x56 );
+    figuresBlack[14] = new Pawn( 0x66 );
+    figuresBlack[15] = new Pawn( 0x76 );
 }
 
 void Board::setHdc( HDC hdc )
@@ -150,50 +171,36 @@ void Board::drawCharacter()
     }
 }
 
-int Board::drawFigure( unsigned char position, Figure *figure )
+int Board::drawFigure( Figure *figure )
 {
+    //maybe for other colors: //https://learn.microsoft.com/de-de/windows/win32/gdiplus/-gdiplus-using-a-color-remap-table-use?redirectedfrom=MSDN
+
     Gdiplus::Graphics graphicObject( this->currentHdc );
     
     if( figure == nullptr )
         return -1;
 
-    graphicObject.DrawImage( figure->bitmap, X + WIDTH * ( position >> 4 ) + BITMAP_SPAN, Y + HEIGHT * ( position & 0x0F ) + BITMAP_SPAN );
+    graphicObject.DrawImage( figure->bitmap, X + WIDTH * ( figure->position >> 4 ) + BITMAP_SPAN, Y + HEIGHT * ( figure->position & 0x0F ) + BITMAP_SPAN );
 
     return 0;
 }
 
-int Board::drawFigures( unsigned char *positions, int arrayLength )
-{
-    //check array data
-    /*if( position <= 0 )
-        return -1;
-    if( ( position >> 4 ) > 0x07 )
-        return -2;
-    if( ( position & 0x0F ) > 0x07 )
-        return -3;
-    */
-
+int Board::drawFigures()
+{   
     Gdiplus::Graphics graphicObject( this->currentHdc );
-    //https://learn.microsoft.com/de-de/windows/win32/gdiplus/-gdiplus-using-a-color-remap-table-use?redirectedfrom=MSDN
-    Gdiplus::Bitmap rook( L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\rook_black_48p.bmp", false );
-    Gdiplus::Bitmap knight( L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\knight_black_48p.bmp", false );
-    Gdiplus::Bitmap bishop( L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\bishop_black_48p.bmp", false );
-    Gdiplus::Bitmap king( L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\king_black_48p.bmp", false );
-    Gdiplus::Bitmap queen( L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\queen_black_48p.bmp", false );
-    Gdiplus::Bitmap pawn( L"C:\\Users\\BRA\\source\\repos\\chess\\PM\\bitmaps\\pawn_black_48p.bmp", false );
     
-    std::array<Gdiplus::Bitmap*, 8> figurePositions{ &rook, &knight, &bishop, &queen, &king, &bishop, &knight, &rook };
-
     int i = 0;
+    int size = figuresBlack.size();
     //draw first row
-    for( ; i < arrayLength / 2; i++ )
+    for( ; i < size / 2; i++ )
     {
-        graphicObject.DrawImage( figurePositions[i], X + WIDTH * ( positions[i] >> 4 ) + BITMAP_SPAN, Y + HEIGHT * ( positions[i] & 0x0F ) + BITMAP_SPAN );
+        graphicObject.DrawImage( figuresBlack[i]->bitmap, X + WIDTH * ( figuresBlack[i]->position >> 4 ) + BITMAP_SPAN, Y + HEIGHT * ( figuresBlack[i]->position & 0x0F ) + BITMAP_SPAN );
     }
     //draw second row
-    for( ; i < arrayLength; i++ )
+    for( ; i < size; i++ )
     {
-        graphicObject.DrawImage( &pawn, X + WIDTH * ( positions[i] >> 4 ) + BITMAP_SPAN, Y + HEIGHT * ( positions[i] & 0x0F ) + BITMAP_SPAN );
+        graphicObject.DrawImage( figuresBlack[i]->bitmap, X + WIDTH * ( figuresBlack[i]->position >> 4 ) + BITMAP_SPAN, Y + HEIGHT * ( figuresBlack[i]->position & 0x0F ) + BITMAP_SPAN );
     }
+
     return 0;
 }
