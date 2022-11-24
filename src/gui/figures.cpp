@@ -1,4 +1,8 @@
 #include "figures.hpp"
+#include <fstream>
+
+std::ifstream file;
+std::ofstream chesslog;
 
 Figure::Figure()
 {
@@ -22,7 +26,16 @@ FigureType Figure::getType()
 
 Rook::Rook()
 {
-    bitmap = new Gdiplus::Bitmap( L"..\\..\\PM\\bitmaps\\rook_black_48p.bmp", false );
+    file.open( "..\\..\\PM\\bitmaps\\rook_black_48p.bmp" );
+    if( !file )
+    {
+        chesslog.open( "chess.log", std::ios::app );
+        chesslog << "..\\..\\PM\\bitmaps\\rook_black_48p.bmp not found";
+    }
+    else
+    {
+        bitmap = new Gdiplus::Bitmap( L"..\\..\\PM\\bitmaps\\rook_black_48p.bmp", false );
+    }
 }
 
 Rook::Rook( unsigned char position ) : Figure( position )

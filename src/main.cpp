@@ -55,7 +55,7 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT message,WPARAM wParam,LPARAM lParam)
         output = CreateWindow("EDIT",
                                    "",
                                    WS_BORDER | WS_CHILD | WS_VISIBLE,
-                                   100, 530, 390, 20,
+                                   120, 530, 370, 20,
                                    hwnd, (HMENU) 1, NULL, NULL);
         break;
     case WM_PAINT:
