@@ -2,29 +2,30 @@
 
 int Input::checkInputWChar()
 {
-    int len = wcslen( input );
-    if( len != 2 )
+    int len = wcslen( userInput );
+    if( len != 5 )
+    {
+        error = L"error";
         return -1;
+    }
 
-    if( isalpha( input[0] ) )
+    if( !isalpha( userInput[0] ) || !isalpha( userInput[3] ) )
         return -2;
 
-    if( isdigit( input[0] ) )
+    if( !isdigit( userInput[1] ) || !isdigit( userInput[4] ) )
         return -3;
         
+    if( userInput[2] != ':' || userInput[2] != '-' )
+        return -4;
+
     return 0;
 }
 
-int Input::checkInputString()
+MoveInfo Input::getMoveInfo()
 {
-    if( usrInput.length() != 2 )
-        return -1;
+    MoveInfo info;
+
+    //splitt string
     
-    if( isalpha(usrInput[0]) != 0 )
-        return -2;
-
-    if( isdigit(usrInput[1]) != 0)
-        return -3;
-
-    return 0;
+    return info;
 }

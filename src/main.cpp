@@ -26,7 +26,7 @@ static Player player0;
 static Input input;
 
 bool init = false;
-bool button_clicked = false;
+bool button_ok = false;
 bool button_setup = false;
 bool button_move = false;
 
@@ -62,27 +62,29 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT message,WPARAM wParam,LPARAM lParam)
         SetWindowHandle(hwnd);
         hdc = BeginPaint( hwnd, &ps );
 
-        referee.board->init( hdc );
+        referee.board->drawBoard( hdc );
         if( button_setup == true )
         {
-            referee.board->init();
-            referee.setup( hdc );
+            referee.board->initFigures();
+            referee.setFigures( hdc );
             button_setup = false;
-            //test
-            int len = GetWindowTextW( hwndTxtUsrInput, input.input, 64 );
-            input.checkInputWChar();
-            //SendMessage(hwndTxtUsrInput,WM_SETTEXT,NULL,&input.input);
-            //SendMessage( output, WM_SETTEXT, NULL, (LPARAM) input.input ); 
-            SetWindowTextW( output, input.input );
         }
         if( button_move == true )
         {
-            
+            int len = GetWindowTextW( hwndTxtUsrInput, input.userInput, 64 );
+            if( input.checkInputWChar() > 0 )
+            {
+                SetWindowTextW( output, input.userInput );
+                break;
+            }
+
+            //SetWindowTextW( output, input.userInput );
+            referee.setFigures( hdc );
             button_move = false;
         }
-        if( button_clicked )
+        if( button_ok )
         {
-            referee.move( hdc, 0x34 );
+            
         }
         
         EndPaint( hwnd, &ps );
@@ -98,8 +100,6 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT message,WPARAM wParam,LPARAM lParam)
         switch( LOWORD( wParam ) )
         {
             case BTN_OK:
-                button_clicked = !button_clicked;
-                InvalidateRect( hwnd, invalidRect, TRUE );
                 break;
             case BTN_SETUP:
                 button_setup = true;

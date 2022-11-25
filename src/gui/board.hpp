@@ -12,7 +12,7 @@ class Board
         Figure* testQueen;
         Board();
         ~Board();
-        void init();
+        void initFigures();
         void setHdc( HDC hdc );
         void unsetHdc();
         
@@ -26,7 +26,7 @@ class Board
         void drawCharacter();
 
         //draw chess fields and characters
-        void init( HDC hdc );
+        void drawBoard( HDC hdc );
 
         //frame a specific field
         int setSelected( unsigned char selected );

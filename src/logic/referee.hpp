@@ -14,6 +14,6 @@ class Referee
         Referee();
         ~Referee();
         
-        int setup( HDC hdc );
+        int setFigures( HDC hdc );
         int move( HDC hdc, /*string symbol, unsigned char from */ unsigned char to );
 };

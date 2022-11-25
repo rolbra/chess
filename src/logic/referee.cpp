@@ -11,7 +11,7 @@ Referee::~Referee()
     delete board;
 }
 
-int Referee::setup( HDC hdc )
+int Referee::setFigures( HDC hdc )
 {
     board->setHdc( hdc );
 

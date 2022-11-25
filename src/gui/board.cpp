@@ -22,7 +22,7 @@ Board::~Board()
         delete figuresBlack[i];
 }
 
-void Board::init()
+void Board::initFigures()
 {
     figuresBlack[0] = new Rook( 0x07 );
     figuresBlack[1] = new Knight( 0x17 );
@@ -85,7 +85,7 @@ void Board::drawFields()
     graphicObject.DrawRectangles( &pen, chessFields, 64 );
 }
 
-void Board::init( HDC hdc )
+void Board::drawBoard( HDC hdc )
 {
     this->currentHdc = hdc;
     drawFields();
