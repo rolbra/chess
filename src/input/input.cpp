@@ -5,7 +5,6 @@ int Input::checkInputWChar()
     int len = wcslen( userInput );
     if( len != 5 )
     {
-        error = L"error";
         return -1;
     }
 
