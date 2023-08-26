@@ -1,6 +1,6 @@
 // https://cplusplus.com/articles/Gw6AC542/
 
-#include "referee.hpp"
+#include "drawer.hpp"
 #include "player.hpp"
 #include "input.hpp"
 
@@ -21,7 +21,7 @@ static HWND sHwnd;
 HWND output;
 HWND hwndTxtUsrInput;
 
-static Referee referee;
+static Drawer drawer;
 static Player player0;
 static Input input;
 
@@ -62,11 +62,11 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT message,WPARAM wParam,LPARAM lParam)
         SetWindowHandle(hwnd);
         hdc = BeginPaint( hwnd, &ps );
 
-        referee.board->drawBoard( hdc );
+        drawer.board->drawBoard( hdc );
         if( button_setup == true )
         {
-            referee.board->initFigures();
-            referee.setFigures( hdc );
+            drawer.board->initFigures();
+            drawer.setFigures( hdc );
             button_setup = false;
         }
         if( button_move == true )
@@ -79,7 +79,7 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT message,WPARAM wParam,LPARAM lParam)
             }
 
             //SetWindowTextW( output, input.userInput );
-            referee.setFigures( hdc );
+            drawer.setFigures( hdc );
             button_move = false;
         }
         if( button_ok )
