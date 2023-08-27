@@ -1,8 +1,8 @@
 #include "figures.hpp"
 #include <fstream>
 
-std::ifstream file;
-std::ofstream chesslog;
+static std::ifstream file;
+static std::ofstream chesslog;
 
 Figure::Figure()
 {

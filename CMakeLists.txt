@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.15.6)
 project(chess)
 
-FILE(GLOB_RECURSE SRC_LOCAL src/*)
+FILE(GLOB_RECURSE SRC_LOCAL src/*)  #if problem on first compile add single cpp files or folders as a parameter here
 SET(SRCFILES ${SRC_LOCAL})
 
-include_directories(src src/gui src/logic src/input)
+include_directories(src src/gui src/logic src/input src/control)
 
 add_executable(chess WIN32 ${SRCFILES})
 

@@ -7,9 +7,15 @@ class InformationCenter
 {
     unsigned char figurePositions[16];
 
+    void checkScreenResolution();
+
 public:
+    unsigned int screenResolutionX, screenResolutionY;
+    
     InformationCenter();
     
     unsigned char getCurrentFigurePositions() const;
     void setNewFigurePositions( const unsigned char positions );
+
+    
 };

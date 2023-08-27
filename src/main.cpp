@@ -3,6 +3,7 @@
 #include "drawer.hpp"
 #include "player.hpp"
 #include "input.hpp"
+#include "splashScreen.hpp"
 
 #define WINDOW_HEIGHT 600
 #define WINDOW_WIDTH 600
@@ -24,7 +25,9 @@ HWND hwndTxtUsrInput;
 static Drawer drawer;
 static Player player0;
 static Input input;
+static SplashScreen splashScreen;
 
+bool firstStart = true;
 bool init = false;
 bool button_ok = false;
 bool button_setup = false;
@@ -61,6 +64,13 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT message,WPARAM wParam,LPARAM lParam)
     case WM_PAINT:
         SetWindowHandle(hwnd);
         hdc = BeginPaint( hwnd, &ps );
+
+        if( firstStart == true )
+        {
+            splashScreen.setPicture( L"..\\..\\PM\\bitmaps\\SplashScreens\\splash01.bmp" );
+            splashScreen.show();
+            firstStart = false;
+        }
 
         drawer.board->drawBoard( hdc );
         if( button_setup == true )
