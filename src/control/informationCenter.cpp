@@ -19,3 +19,15 @@ void InformationCenter::checkScreenResolution()
    this->screenResolutionX = desktop.right;
    this->screenResolutionY = desktop.bottom;
 }
+
+int InformationCenter::getX()
+{
+    checkScreenResolution();
+    return screenResolutionX;
+}
+
+int InformationCenter::getY()
+{
+    checkScreenResolution();
+    return screenResolutionY;
+}

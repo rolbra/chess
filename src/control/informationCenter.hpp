@@ -8,10 +8,12 @@ class InformationCenter
     unsigned char figurePositions[16];
 
     void checkScreenResolution();
+    unsigned int screenResolutionX, screenResolutionY;
 
 public:
-    unsigned int screenResolutionX, screenResolutionY;
     
+    int getX();
+    int getY();
     InformationCenter();
     
     unsigned char getCurrentFigurePositions() const;

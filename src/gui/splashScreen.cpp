@@ -1,5 +1,8 @@
 #include "splashScreen.hpp"
 #include <fstream>
+#include "informationCenter.hpp"
+
+#define screenTime 3000
 
 static std::ifstream file;
 static std::ofstream chesslog;
@@ -36,7 +39,9 @@ int SplashScreen::show()
 {
     Gdiplus::Graphics graphicObject( this->hwd );
 
-    graphicObject.DrawImage( this->picture, 100, 100 );
+    graphicObject.DrawImage( this->picture, 100, 100, 1500, 1000 );
     
+    Sleep( screenTime );
+
     return 0;
 }
