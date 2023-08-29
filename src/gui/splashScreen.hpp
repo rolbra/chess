@@ -10,6 +10,11 @@ private:
     HWND hwd;
     const WCHAR *filepath;
 
+    POINT p;
+    int deltaX, deltaY;
+    int pictureWith, pictureHeight;
+    void calculatePosition();
+
 public:
     SplashScreen();
     SplashScreen( HWND hwd );

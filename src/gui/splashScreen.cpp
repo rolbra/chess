@@ -35,12 +35,27 @@ void SplashScreen::setPicture( const WCHAR *filepath )
     }
 }
 
+void SplashScreen::calculatePosition()
+{
+    InformationCenter info;
+
+    this->deltaX = info.getX() / 6;
+    this->deltaY = info.getY() / 6;
+    
+    this->p.x = deltaX;
+    this->p.y = deltaY;
+
+    this->pictureWith = deltaX * 4;
+    this->pictureHeight = deltaY * 4;
+}
+
 int SplashScreen::show()
 {
     Gdiplus::Graphics graphicObject( this->hwd );
 
-    graphicObject.DrawImage( this->picture, 100, 100, 1500, 1000 );
-    
+    calculatePosition();
+    graphicObject.DrawImage( this->picture, p.x, p.y, pictureWith, pictureHeight );
+
     Sleep( screenTime );
 
     return 0;

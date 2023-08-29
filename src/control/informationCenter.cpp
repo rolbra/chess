@@ -1,3 +1,5 @@
+#pragma once
+
 #include "informationCenter.hpp"
 #include <wtypes.h>
 
