@@ -1,7 +1,33 @@
-#pragma once
 
+#include <string>
 #include "informationCenter.hpp"
 #include <wtypes.h>
+#include <fstream>
+
+static std::ifstream conf;
+static std::ofstream chesslog;
+
+ConfigManager::ConfigManager()
+{}
+
+std::string ConfigManager::getFromConfig( const std::string *flag )
+{
+    conf.open("../../chess.config");
+    if( !conf )
+    {
+        chesslog.open( "chess.log", std::ios::app );
+        chesslog << "no File chess.config found";
+        chesslog.close();
+        return "";
+    }
+    else
+    {
+        //find method here
+        //return result
+        return "";
+    }
+}
+
 
 InformationCenter::InformationCenter()
 {

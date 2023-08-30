@@ -23,15 +23,15 @@ SplashScreen::~SplashScreen()
 void SplashScreen::setPicture( const WCHAR *filepath )
 {
     this->filepath = filepath;
-    file.open( "..\\..\\PM\\bitmaps\\SplashScreens\\splash01.bmp" );
+    file.open( "..\\..\\PM\\bitmaps\\SplashScreens\\splash02.bmp" );
     if( !file )
     {
         chesslog.open( "chess.log", std::ios::app );
-        chesslog << "..\\..\\PM\\bitmaps\\SplashScreens\\splash01.bmp";
+        chesslog << "..\\..\\PM\\bitmaps\\SplashScreens\\splash02.bmp";
     }
     else
     {
-        picture = new Gdiplus::Bitmap( L"..\\..\\PM\\bitmaps\\SplashScreens\\splash01.bmp", false );
+        picture = new Gdiplus::Bitmap( L"..\\..\\PM\\bitmaps\\SplashScreens\\splash02.bmp", false );
     }
 }
 
@@ -52,9 +52,10 @@ void SplashScreen::calculatePosition()
 int SplashScreen::show()
 {
     Gdiplus::Graphics graphicObject( this->hwd );
-
+    
     calculatePosition();
-    graphicObject.DrawImage( this->picture, p.x, p.y, pictureWith, pictureHeight );
+    //graphicObject.DrawImage( this->picture, p.x, p.y, pictureWith, pictureHeight );
+    graphicObject.DrawImage( this->picture, 640, 400, 2560, 1600 );
 
     Sleep( screenTime );
 

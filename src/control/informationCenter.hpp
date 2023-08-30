@@ -3,6 +3,13 @@
 
 #pragma once
 
+class ConfigManager
+{
+public:
+    ConfigManager();
+    std::string getFromConfig( const std::string *flag );
+};
+
 class InformationCenter
 {
     unsigned char figurePositions[16];
