@@ -16,11 +16,13 @@ class InformationCenter
 
     void checkScreenResolution();
     unsigned int screenResolutionX, screenResolutionY;
+    double scale;
 
 public:
     
-    int getX();
-    int getY();
+    unsigned int getX();
+    unsigned int getY();
+    double getScale();
     InformationCenter();
     
     unsigned char getCurrentFigurePositions() const;

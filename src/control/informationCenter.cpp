@@ -3,6 +3,9 @@
 #include "informationCenter.hpp"
 #include <wtypes.h>
 #include <fstream>
+#include <Windows.h>
+#include <shellscalingapi.h>
+
 
 static std::ifstream conf;
 static std::ofstream chesslog;
@@ -46,16 +49,27 @@ void InformationCenter::checkScreenResolution()
    // (horizontal, vertical)
    this->screenResolutionX = desktop.right;
    this->screenResolutionY = desktop.bottom;
+
+   //check Monitor Scaling
+   HMONITOR hMonitor = MonitorFromWindow( hDesktop, MONITOR_DEFAULTTOPRIMARY );
+   DEVICE_SCALE_FACTOR devScaleFactor;
+   HRESULT res = GetScaleFactorForMonitor( hMonitor, &devScaleFactor );
+   this->scale = devScaleFactor;
 }
 
-int InformationCenter::getX()
+unsigned int InformationCenter::getX()
 {
     checkScreenResolution();
     return screenResolutionX;
 }
 
-int InformationCenter::getY()
+unsigned int InformationCenter::getY()
 {
     checkScreenResolution();
     return screenResolutionY;
+}
+
+double InformationCenter::getScale()
+{
+    return this->scale / 100;
 }

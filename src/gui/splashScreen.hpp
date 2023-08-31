@@ -7,7 +7,6 @@
 class SplashScreen
 {
 private:
-    HWND hwd;
     const WCHAR *filepath;
 
     POINT p;
@@ -17,11 +16,10 @@ private:
 
 public:
     SplashScreen();
-    SplashScreen( HWND hwd );
     ~SplashScreen();
 
-    Gdiplus::Bitmap *picture;
+    Gdiplus::Image *image;
 
     void setPicture( const WCHAR *filepath );
-    int show();
+    int show( HDC hdc);
 };

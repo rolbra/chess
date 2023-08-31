@@ -5,8 +5,8 @@
 #include "input.hpp"
 #include "splashScreen.hpp"
 
-#define WINDOW_HEIGHT 600
 #define WINDOW_WIDTH 600
+#define WINDOW_HEIGHT 600
 
 #define BTN_OK 100
 #define BTN_EXIT 101
@@ -21,6 +21,7 @@
 static HWND sHwnd;
 HWND output;
 HWND hwndTxtUsrInput;
+HWND slash;
 
 static Drawer drawer;
 static Player player0;
@@ -68,7 +69,7 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT message,WPARAM wParam,LPARAM lParam)
         if( firstStart == true )
         {
             splashScreen.setPicture( L"..\\..\\PM\\bitmaps\\SplashScreens\\splash01.bmp" );
-            splashScreen.show();
+            splashScreen.show( hdc );
             firstStart = false;
         }
 
@@ -177,6 +178,18 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,i
         exit(0);
     }
     
+    //Create Window for Splash Screen
+    HWND hwndSplashScreen = CreateWindow(NULL,NULL,
+                           WS_CHILD | WS_VISIBLE,
+                           CW_USEDEFAULT,
+                           CW_USEDEFAULT,
+                           WINDOW_WIDTH,
+                           WINDOW_HEIGHT,
+                           NULL,
+                           NULL,
+                           hInstance,
+                           NULL);
+
     //Create Button OK
     HWND hwndButtonOk = CreateWindow( 
     "BUTTON",  // Predefined class; Unicode assumed 
