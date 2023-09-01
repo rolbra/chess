@@ -65,3 +65,20 @@ int SplashScreen::show( HDC hdc )
 
     return 0;
 }
+
+int SplashScreen::DisplayConfirmSaveAsMessageBox()
+{
+    int msgboxID = MessageBox(
+        NULL,
+        "temp.txt already exists.\nDo you want to replace it?",
+        "Confirm Save As",
+        MB_ICONEXCLAMATION | MB_YESNO
+    );
+
+    if (msgboxID == IDYES)
+    {
+        // TODO: add code
+    }
+
+    return msgboxID;    
+}

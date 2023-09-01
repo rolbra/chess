@@ -69,7 +69,8 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT message,WPARAM wParam,LPARAM lParam)
         if( firstStart == true )
         {
             splashScreen.setPicture( L"..\\..\\PM\\bitmaps\\SplashScreens\\splash01.bmp" );
-            splashScreen.show( hdc );
+            //splashScreen.show( hdc );
+            int rc = splashScreen.DisplayConfirmSaveAsMessageBox();
             firstStart = false;
         }
 
@@ -183,7 +184,7 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,i
                            WS_CHILD | WS_VISIBLE,
                            CW_USEDEFAULT,
                            CW_USEDEFAULT,
-                           WINDOW_WIDTH,
+                           700,
                            WINDOW_HEIGHT,
                            NULL,
                            NULL,

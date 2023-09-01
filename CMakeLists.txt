@@ -8,4 +8,4 @@ include_directories(src src/gui src/logic src/input src/control)
 
 add_executable(chess WIN32 ${SRCFILES})
 
-target_link_libraries(chess "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.19041.0/um/x86/gdiplus.lib")
+target_link_libraries(chess "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.19041.0/um/x86/gdiplus.lib" "Shcore.lib")

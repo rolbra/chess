@@ -18,6 +18,8 @@ public:
     SplashScreen();
     ~SplashScreen();
 
+    int DisplayConfirmSaveAsMessageBox();
+
     Gdiplus::Image *image;
 
     void setPicture( const WCHAR *filepath );
